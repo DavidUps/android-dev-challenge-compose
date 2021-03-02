@@ -38,13 +38,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.popUpTo
-import com.example.androiddevchallenge.model.Puppy
-import com.example.androiddevchallenge.model.Puppy.Companion.Gender.MALE
+import com.example.androiddevchallenge.feature.puppy.model.Puppy
+import com.example.androiddevchallenge.feature.puppy.model.Puppy.Companion.Gender.MALE
 import com.example.androiddevchallenge.ui.theme.blue
 import com.example.androiddevchallenge.ui.theme.purple
 import com.google.gson.Gson
@@ -185,55 +184,5 @@ fun ListPuppyImg(puppy: Puppy) {
                 Log.w("PuppyAvatar", error.throwable)
             }
         )
-    }
-}
-
-@ExperimentalStdlibApi
-@Preview
-@Composable
-fun preview() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-    ) {
-        Column(
-            Modifier
-                .weight(0.70f)
-        ) {}
-        Column(
-            Modifier
-                .weight(0.40f)
-        ) {
-            ListRowCard(
-                Puppy(
-                    "Polla",
-                    "https://www.anicura.es/globalassets/group/breed-tool/images-dogs/cocker-spaniel.jpg",
-                    MALE,
-                    2
-                )
-            )
-        }
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .weight(0.90f)
-                .fillMaxWidth()
-        ) {
-            ListPuppyImg(
-                Puppy(
-                    "Polla",
-                    "https://www.anicura.es/globalassets/group/breed-tool/images-dogs/cocker-spaniel.jpg",
-                    MALE,
-                    2
-                )
-            )
-        }
-        Spacer(modifier = Modifier.weight(0.10f))
     }
 }

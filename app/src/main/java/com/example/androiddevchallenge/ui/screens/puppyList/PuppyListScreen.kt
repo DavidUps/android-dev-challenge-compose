@@ -23,32 +23,41 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.androiddevchallenge.model.Puppy
+import com.example.androiddevchallenge.feature.puppy.PuppyViewModel
+import com.example.androiddevchallenge.feature.puppy.model.Puppy
 import com.example.androiddevchallenge.ui.screens.puppyList.components.PuppyList
 import com.example.androiddevchallenge.ui.screens.puppyList.components.Search
 
 @ExperimentalStdlibApi
 @Composable
-fun PuppyListScreen(navController: NavController) {
+fun PuppyListScreen(navController: NavController, puppyViewModel: PuppyViewModel = viewModel()) {
 
-    val petList = Puppy.generate()
+    val puppies: List<Puppy> by puppyViewModel.puppies.observeAsState(emptyList())
+
+    puppyViewModel.puppies()
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Scaffold(
             topBar = {
                 Search(
                     filtered = { filter ->
-                        petList.filter { it.name == filter }
+                        puppyViewModel.puppies(filter)
                     }
                 )
             },
             content = {
-                LazyColumn(modifier = Modifier.fillMaxHeight(), contentPadding = PaddingValues(16.dp)) {
-                    itemsIndexed(petList) { index, item ->
+                LazyColumn(
+                    modifier = Modifier.fillMaxHeight(),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    itemsIndexed(puppies) { index, item ->
                         key(index) {
                             PuppyList(puppy = item, navController = navController, index = index)
                         }

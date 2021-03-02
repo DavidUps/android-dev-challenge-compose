@@ -16,7 +16,7 @@
 package com.example.androiddevchallenge.core
 
 import androidx.navigation.NavBackStackEntry
-import com.example.androiddevchallenge.model.Puppy
+import com.example.androiddevchallenge.feature.puppy.model.Puppy
 import com.google.gson.Gson
 
 fun NavBackStackEntry.getPuppy() =
