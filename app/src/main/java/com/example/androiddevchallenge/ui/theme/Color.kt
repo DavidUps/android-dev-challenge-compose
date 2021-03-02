@@ -24,4 +24,3 @@ val teal200 = Color(0xFF03DAC5)
 val blue = Color(0xFF3F51B5)
 val purple = Color(0xFF9C27B0)
 val gray = Color(0xFF747474)
-
