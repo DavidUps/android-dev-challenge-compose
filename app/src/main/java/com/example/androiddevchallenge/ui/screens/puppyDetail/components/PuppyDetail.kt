@@ -78,7 +78,7 @@ fun PuppyDetail(puppy: Puppy, navController: NavController) {
                 color = if (puppy.gender == Puppy.Companion.Gender.MALE) blue
                 else purple,
             )
-            Text(text = puppy.name, style = MaterialTheme.typography.body1)
+            Text(text = "Age: ${puppy.age}", style = MaterialTheme.typography.body1)
         }
     }
     Column(modifier = Modifier.fillMaxSize()) {
