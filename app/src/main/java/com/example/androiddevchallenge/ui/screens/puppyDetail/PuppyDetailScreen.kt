@@ -15,12 +15,18 @@
  */
 package com.example.androiddevchallenge.ui.screens.puppyDetail
 
-import androidx.compose.material.Text
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.example.androiddevchallenge.model.Puppy
+import com.example.androiddevchallenge.ui.screens.puppyDetail.components.PuppyDetail
 
+@ExperimentalStdlibApi
 @Composable
 fun PuppyDetailScreen(navController: NavController, puppy: Puppy?) {
-    Text(text = "hola")
+    Scaffold {
+        puppy?.let { puppy ->
+            PuppyDetail(puppy = puppy, navController = navController)
+        }
+    }
 }

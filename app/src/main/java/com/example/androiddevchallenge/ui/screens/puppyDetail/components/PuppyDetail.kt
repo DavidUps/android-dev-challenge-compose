@@ -15,6 +15,8 @@
  */
 package com.example.androiddevchallenge.ui.screens.puppyDetail.components
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +24,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -30,17 +33,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -48,157 +57,70 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphNavigator
 import com.example.androiddevchallenge.R
+import com.example.androiddevchallenge.model.Puppy
+import com.example.androiddevchallenge.ui.theme.blue
+import com.example.androiddevchallenge.ui.theme.purple
+import dev.chrisbanes.accompanist.coil.CoilImage
+import org.intellij.lang.annotations.JdkConstants
 
+@ExperimentalStdlibApi
 @Composable
-fun DetailScreen() {
+fun PuppyDetail(puppy: Puppy, navController: NavController) {
 
-    Surface(color = MaterialTheme.colors.background) {
+    val context = LocalContext.current
 
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
-            Box(
-                Modifier
-                    .weight(0.55f)
-                    .fillMaxWidth()
-            ) {
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(),
-                    painter = painterResource(R.drawable.cocker),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
-                )
+    Column(modifier = Modifier.fillMaxSize()) {
+        CoilImage(
+            data = puppy.photo,
+            contentDescription = "",
+            contentScale = ContentScale.Crop,
+            fadeIn = true,
+            modifier = Modifier
+                .clip(RoundedCornerShape(bottomEnd = 12.dp, bottomStart = 12.dp))
+                .weight(0.45f),
+            loading = {
+                Box(Modifier.matchParentSize()) {
+                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+                }
+            },
+            error = { error ->
+                Log.w("PuppyAvatar", error.throwable)
             }
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .weight(0.45f)
-                    .padding(bottom = 56.dp, start = 24.dp, end = 24.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
-
-                Spacer(modifier = Modifier.height(height = 96.dp))
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    text = "${"dog.name"} arrived to the shelter today.  is a puppy and... in true puppy fashion, will need your time and dedication."
-                )
-            }
-        }
-
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
+                .weight(0.55f)
+                .padding(16.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .weight(0.55f)
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
-            ) {
-                Surface(
-                    elevation = 2.dp,
-                    shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colors.surface,
-                    modifier = Modifier
-                        .height(height = 96.dp)
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                        .offset(y = 66.dp)
-                ) {
-
-                    Column(
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.Start,
-                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 24.dp)
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = "dog.name",
-                                style = TextStyle(
-                                    color = MaterialTheme.colors.onSurface,
-                                    fontSize = 22.sp,
-                                    fontWeight = FontWeight.Bold,
-                                )
-                            )
-                        }
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start)
-                        ) {
-
-                            Text(
-                                text = "dog.age",
-                                style = TextStyle(
-                                    color = Color.Gray,
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Medium,
-                                )
-                            )
-                            Text(
-                                text = "dog.type",
-                                style = TextStyle(
-                                    color = MaterialTheme.colors.primary,
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                )
-                            )
-                        }
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(0.dp, Alignment.Start)
-                        ) {
-
-                            Icon(
-                                imageVector = ImageVector.vectorResource(id = R.drawable.cocker),
-                                tint = Color.Black,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(18.dp)
-                            )
-
-                            Text(
-                                text = "Çankaya",
-                                style = TextStyle(
-                                    color = Color.Gray,
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Medium,
-                                )
-                            )
-                            Text(
-                                text = ", Ankara",
-                                style = TextStyle(
-                                    color = MaterialTheme.colors.onSurface,
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.weight(0.45f))
+            Text(text = puppy.name, style = MaterialTheme.typography.h3)
+            Text(
+                text = puppy.gender.name.lowercase().capitalize(),
+                style = MaterialTheme.typography.body2,
+                color = if (puppy.gender == Puppy.Companion.Gender.MALE) blue
+                else purple,
+            )
+            Text(text = puppy.name, style = MaterialTheme.typography.body1)
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewPuppyListTest2() {
-    Scaffold {
-        DetailScreen()
+    Column(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .weight(0.47f)
+                .fillMaxWidth()
+                .padding(end = 16.dp),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            OutlinedButton(onClick = {
+                Toast.makeText(context, "Adopted", Toast.LENGTH_SHORT).show()
+                navController.navigateUp()
+            }, shape = RoundedCornerShape(16.dp)) {
+                Text(text = "Adoption")
+            }
+        }
+        Spacer(modifier = Modifier.weight(0.53f))
     }
 }
